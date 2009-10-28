@@ -1,18 +1,18 @@
 # http://snippets.dzone.com/posts/show/4721
 # describe Product, 'with Group' do
-# 
+#
 #   it 'should belong to group' do
 #     Product.should belong_to(:product_group)
 #   end
-# 
+#
 # end
-# 
+#
 # describe ProductGroup, 'with Product' do
-# 
+#
 #   it 'should have many products depending (on group)' do
 #     ProductGroup.should have_many(:products).depending
 #   end
-# 
+#
 # end
 
 module AssociationMatchers
@@ -34,7 +34,7 @@ module AssociationMatchers
       @expected_type = type
       @expected_options = {}
     end
-    
+
     def matches?(target)
       Class === target or
       raise ArgumentError, 'class expected'
@@ -44,7 +44,7 @@ module AssociationMatchers
       unless @assoc = target.reflect_on_association(@name)
         @failure = :missing_association
         return false
-      end 
+      end
 
       unless @assoc.macro.eql?(@expected_type)
         @failure = :wrong_type

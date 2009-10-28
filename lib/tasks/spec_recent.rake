@@ -1,3 +1,5 @@
+require 'spec/rake/spectask'
+
 # Grab recently touched specs
 def recent_specs(touched_since)
   recent_specs = FileList['app/**/*'].map do |path|
@@ -14,8 +16,15 @@ def recent_specs(touched_since)
   end.uniq
 end
 
-desc 'Run recent specs'
-Spec::Rake::SpecTask.new("spec:recent") do |t|
-  t.spec_opts = ["--format","specdoc","--color"]
-  t.spec_files = recent_specs(Time.now - 60) # 10 min.
+# Doesn't seem to respect spec/spec.opts
+#desc 'Run recent specs'
+#Spec::Rake::SpecTask.new("spec:recent") do |t|
+#  t.spec_opts = ["--format","specdoc","--color"]
+#  t.spec_files = recent_specs(Time.now - 10.minutes)
+#end
+
+namespace :spec do
+  task :recent do
+    system("#{RAILS_ROOT}/script/spec", "-cfs", "--drb", *recent_specs(Time.now - 10.minutes))
+  end
 end
