@@ -37,11 +37,11 @@ module SpecUtils
   run by using Spork. It will be faster if you are
   running a few tests (but slower if you are running
   all of them, due to DRB overhead).
-    
+
       sudo gem install spork
       spork
       spec --drb spec/foo_spec.rb
-      
+
   Just install the gem to make this message go away.
   If you are on Snow Leopard, you will also need to
   upgrade rspec to (1.2.9) to avoid a SocketError.
@@ -51,11 +51,12 @@ module SpecUtils
     }
       end
       $spork_message_shown = true
-      
-      class Spork
+
+      sc = Class.new do
         def self.prefork ; yield ; end
         def self.each_run ; yield ; end
       end
+      Kernel.const_set("Spork", sc)
     end
   end
 
